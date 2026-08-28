@@ -8,9 +8,12 @@ before and after, with and without `python -O`.
 
 ## Order of operations
 
-1. **Send the email** (`2026-08-27-email-bip360-authors.md`) from
-   `ashwingoyal2006@gmail.com`, attaching `bip360-ref-impl-fix.patch`.
-   Ten minutes. Update the date in the file if you send on a later day.
+1. **Send the email.** It is already sitting as a draft in Gmail for
+   ashwingenius2006@gmail.com - subject "BIP 360 ref-impl: missing depth
+   bound + validation asserts stripped under -O", patch attached and
+   verified byte-for-byte against this folder's copy. Open Drafts, read it
+   once, hit Send. (`2026-08-27-email-bip360-authors.md` is the record of
+   its contents.)
 2. **Reply to Galaxy the same day** with Variant A from `galaxy-reply.md`.
    Never send Variant A before step 1 has actually happened.
 3. **When the authors respond**, forward the substance to Galaxy and record

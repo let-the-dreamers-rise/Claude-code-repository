@@ -1,50 +1,73 @@
 # Disclosure email — BIP 360 authors
 
-Send from: `ashwingoyal2006@gmail.com` (the address on the repo and the grant application)
+STATUS: already loaded as a Gmail draft in ashwingenius2006@gmail.com with
+bip360-ref-impl-fix.patch attached (verified byte-identical to the copy in
+this folder). Open Gmail -> Drafts -> hit Send. This file is the record of
+what the draft contains.
 
 **To:** hunter@surmount.systems, ethan.r.heilman@gmail.com, isabel.duke@gmail.com
-**Subject:** BIP 360 ref-impl (p2mr.py): two conformance/robustness gaps, with reproducers and a tested patch
-**Attachment:** `bip360-ref-impl-fix.patch`
+**Subject:** BIP 360 ref-impl: missing depth bound + validation asserts stripped under -O
 
 ---
 
-Hello Hunter, Ethan, Isabel,
+Hi Hunter, Ethan, Isabel,
 
-I run an independent conformance-testing project for BIP 360 (P2MR): a from-scratch implementation differential-tested against the reference at `bip-0360/ref-impl/python/p2mr.py`. The two implementations agree byte-for-byte on all 16 official construction vectors (9 construction + 7 PQC) and on 2,000 seeded random script trees — so I believe the two divergences below are signal rather than reimplementation noise. Both reproduce against current master (`7fe0b03`) as well as the commit my suite pins (`ed4ffcb6`).
+I've been differential-testing the BIP 360 ref-impl (bip-0360/ref-impl/python/p2mr.py)
+against an independent implementation I wrote from scratch. The two agree byte-for-byte
+on all 16 official construction vectors and on 2000 seeded random script trees, so I'm
+fairly confident the divergences below are real and not my own bugs. Both reproduce on
+current master (7fe0b03).
 
-**1) Missing depth bound: the ref-impl emits consensus-invalid control blocks.**
-BIP 360's Script Validation requires the control block length to be `1 + 32 * m` with `m` between 0 and 128 inclusive. `compute_merkle_root` / `compute_control_block` apply no depth bound, so a 129-deep tree yields a valid-looking merkle root and a 4,129-byte control block (m = 129) — an output consensus must reject as unspendable. Reproducer, run from `ref-impl/python`:
+1. No depth bound, so the ref-impl can emit consensus-invalid control blocks.
+
+The BIP's script validation says a control block "must have length 1 + 32 * m, for a
+value of m that is an integer between 0 and 128, inclusive". compute_merkle_root and
+compute_control_block never check depth: give them a 129-deep tree and you get a
+normal-looking root plus a 4129-byte control block (m = 129), i.e. an output consensus
+has to reject as unspendable. Repro from ref-impl/python:
 
     import p2mr
     leaf = lambda s: {"leafVersion": 0xC0, "script": s}
     tree = leaf("51")
     for _ in range(129):
         tree = [tree, leaf("52")]
-    print(len(p2mr.compute_control_block(0, tree)))   # 4129 -> m = 129
+    print(len(p2mr.compute_control_block(0, tree)))   # 4129
 
-Severity is low (129-deep trees are pathological), but example code that can mint an unspendable output seems worth a guard before wallet authors copy the pattern.
+129-deep trees are pathological, so this is low severity, but it seems worth a guard
+before wallet code copies the pattern.
 
-**2) Structural validation via `assert` — stripped under `python -O`, silently dropping a leaf.**
-`compute_merkle_root` enforces the binary-tree invariant with `assert len(tree) == 2`. Under `python -O` the assert is stripped, so a malformed ternary branch does not raise — it returns the root of its first two leaves, i.e. the third script leaf silently vanishes from the commitment:
+2. The binary-tree check is an assert, which python -O strips.
+
+compute_merkle_root line 102: assert len(tree) == 2. Under -O that's gone, and a
+malformed 3-child branch doesn't raise - it returns the root of the first two leaves,
+so the third script leaf silently disappears from the commitment:
 
     $ python3 -O
     >>> import p2mr
     >>> l = lambda s: {"leafVersion": 0xC0, "script": s}
     >>> p2mr.compute_merkle_root([l("51"), l("52"), l("53")]).hex()
-    # identical to compute_merkle_root([l("51"), l("52")]).hex() — no error
+    # same value as for [l("51"), l("52")], no error
 
-The usual fix is explicit raises for input validation, keeping `assert` for true internal invariants.
+Standard fix is an explicit raise for input validation, keeping assert for internal
+invariants.
 
-The attached patch does both: adds the `m <= 128` guard (depth 128 still accepted, 129 refused), converts the validation asserts in `compute_merkle_root` / `compute_control_block` to `ValueError`, and adds three negative regression tests wired into `BIP360_tests()`. The existing 9/9 vector suite passes with and without `-O`. Happy to open this as a PR on bitcoin/bips instead if you prefer — or to close the thread with "intended behavior" if that's your read; I'll record either outcome.
+I've attached a patch that does both: m <= 128 guard (128 still accepted, 129 refused),
+validation asserts turned into ValueError, and three negative tests wired into
+BIP360_tests(). Your existing 9/9 vectors pass with and without -O. Happy to open it as
+a PR on bitcoin/bips instead if that's easier - and if either behavior is actually
+intended, tell me and I'll just record that.
 
-Separately, two divergences I've graded as **questions, not bugs**, where I'd value your intent:
+Two smaller things I'd call questions rather than bugs:
 
-- `tapleaf_hash` raises on an empty script. Is the empty-script leaf meant to be unrepresentable at construction, or is that defensive?
-- Construction silently masks odd leaf versions (`0xc1` -> `0xc0`) per `v = c[0] & 0xfe`. Intended at construction time, or should surprising input be refused rather than rewritten?
+- tapleaf_hash refuses empty scripts. Deliberate, or just defensive?
+- construction silently masks odd leaf versions (0xc1 -> 0xc0, per "v = c[0] & 0xfe").
+  Would you rather refuse odd versions than rewrite them?
 
-Full graded write-up (method, control results, and all four items): https://github.com/let-the-dreamers-rise/p2mr-assurance-lab/blob/main/FINDINGS.md — everything reproduces from a fresh clone, Python only, no dependencies.
+Full graded writeup with method and repro instructions is in FINDINGS.md at the root of
+the repo, let-the-dreamers-rise/p2mr-assurance-lab on GitHub (runs from a fresh clone,
+stdlib only, no deps).
 
-Thanks for BIP 360. Happy to run any revision of the vectors or ref-impl through the suite as the draft evolves.
+If it's useful I'll keep running the suite against future revisions of the vectors and
+ref-impl as the draft evolves.
 
 Ashwin Goyal
-P2MR Assurance Lab — https://github.com/let-the-dreamers-rise/p2mr-assurance-lab
