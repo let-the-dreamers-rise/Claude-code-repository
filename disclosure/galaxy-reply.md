@@ -11,7 +11,9 @@ extra day.
 
 The straight answer: no, they had not been disclosed when you asked, and that was my
 mistake in sequencing. The writeups have been public in FINDINGS.md since the
-repository went up, but I had scoped direct notification to the authors into the funded
+repository went up
+(https://github.com/let-the-dreamers-rise/p2mr-assurance-lab/blob/main/FINDINGS.md),
+but I had scoped direct notification to the authors into the funded
 program's disclosure step (Q14). Two weeks between publishing a finding and telling the
 people who maintain the code is longer than it should have been, and your question is
 what flagged it. Reporting these two costs nothing, so it is done: today I sent both
