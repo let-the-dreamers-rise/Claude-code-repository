@@ -8,11 +8,9 @@ the disclosure happened before it has.
 
 ## Variant A (recommended — after the email is sent)
 
-Short answer: not when you asked — they have been now, and your question is what fixed the sequencing.
+Not when you asked. That was a sequencing mistake and your question flagged it, so it's fixed: the writeups have been public in FINDINGS.md since the repo went up, but I'd scoped direct notification to the authors into the funded disclosure step (Q14). Reporting these two costs nothing, so today I sent both to the BIP 360 authors (Hunter Beast, Ethan Heilman, Isabel Foxen Duke) with reproducers that run against their own file and a tested patch: the missing m <= 128 depth guard, explicit raises replacing the asserts that python -O strips, and three regression tests, with their existing 9/9 vector suite passing before and after. I also offered to open it as a PR on bitcoin/bips.
 
-The graded writeups have been public in FINDINGS.md since the repository went up, but direct notification to the BIP 360 authors was scoped into the funded program's coordinated-disclosure step (Q14). Your question exposed that as the wrong order — these two findings don't need funding to report — so today both went to the three BIP 360 authors (Hunter Beast, Ethan Heilman, Isabel Foxen Duke) with standalone reproducers that run against their own file, a tested minimal patch (the missing m ≤ 128 depth guard, plus explicit raises replacing the `assert`-based validation that `python -O` strips), and three negative regression tests — the reference's own 9/9 vector suite passes with the patch, with and without `-O`. I offered to open it as a PR on bitcoin/bips if they prefer.
-
-Reaction: none yet — the mail went out today. I'll forward the first response as it arrives, whatever it says; if the maintainers conclude either behavior is intended, that verdict goes into FINDINGS.md too. Two things you can verify without trusting me in the meantime: both issues are still live on bitcoin/bips master (commit 7fe0b03, Aug 20 — the assert is at bip-0360/ref-impl/python/p2mr.py line 102, and no depth bound exists anywhere in the file against the BIP's m ≤ 128 rule), and the bips issue tracker has no prior report of either, so the findings remain novel as of this email.
+No reaction yet - the mail went out today. I'll forward the first reply whatever it says, and if they rule either behavior intended, that verdict goes into FINDINGS.md too. In the meantime both issues are still checkable on bitcoin/bips master (commit 7fe0b03): the assert is at bip-0360/ref-impl/python/p2mr.py line 102, there is no depth bound anywhere in that file against the BIP's m <= 128 rule, and the tracker has no prior report of either.
 
 ## Variant B (only if replying before the email is sent)
 
