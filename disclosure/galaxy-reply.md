@@ -42,3 +42,22 @@ Ashwin
    runs the four commands.
 3. bitcoin/bips PR (bips-pr-description.md): open if the authors ask, or after
    about a week of silence.
+
+---
+
+## Correction + good-news follow-up (send if the reply above already went out)
+
+Two updates on the disclosure.
+
+First, the good one: the authors came back within a day. Hunter Beast asked me to
+put it on GitHub rather than email so it doesn't get lost in his inbox, so it is
+now filed as a PR against bitcoin/bips (that repo has issues disabled, so a PR is
+the equivalent trackable thread): <PR URL>. The patch is in it, along with both
+writeups and the repros.
+
+Second, a correction to my last note: I said the bips issue tracker had no prior
+report of these findings. That was sloppy - bitcoin/bips has no issue tracker at
+all, so there was nothing to search. What I can state accurately is that no open
+pull request touches the file, and its last commit was in June, so the findings
+were unreported upstream. I'd rather correct my own evidence than leave a claim
+standing that doesn't survive checking.
