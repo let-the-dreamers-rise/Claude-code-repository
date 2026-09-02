@@ -52,7 +52,10 @@ to Galaxy, send the correction in `galaxy-reply.md`.
   disabled, so a PR is proposed instead, and he was asked to name another repo if
   he'd rather have a real issue.
 - p2mr-assurance-lab README 24 -> 27 fixed: PR #2, needs a merge click.
-- STILL BLOCKED: the bitcoin/bips PR itself. This session's GitHub access is scoped
+- bitcoin/bips PR: branch pushed to the fork let-the-dreamers-rise/bips as
+  bip360-refimpl-depth-bound-and-raises (commit 6ef7c33), verified 9/9 + 3/3 with
+  and without -O against fork HEAD 7273e17. Creating the PR itself targets
+  bitcoin/bips and is still out of session scope: see PR-READY-paste-this.md.
   to let-the-dreamers-rise; forking bitcoin/bips was denied and it cannot be
   attached (cross-owner). Open it by hand with the steps in
   `bips-pr-description.md`, or start a fresh session with bitcoin/bips as the
