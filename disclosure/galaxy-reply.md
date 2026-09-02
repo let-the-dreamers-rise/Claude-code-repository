@@ -49,7 +49,7 @@ Ashwin
 
 Two updates on the disclosure.
 
-First, the good one: the authors came back within a day. Hunter Beast asked me to
+First, the good one: the authors came back within a day. Ethan Heilman asked me to
 put it on GitHub rather than email so it doesn't get lost in his inbox, so it is
 now filed as a PR against bitcoin/bips (that repo has issues disabled, so a PR is
 the equivalent trackable thread): <PR URL>. The patch is in it, along with both

@@ -1,4 +1,4 @@
-# Reply to Hunter (same email thread) — after the PR is open
+# Reply to Ethan Heilman (same email thread) — SENT 2026-09-02
 
 Issues are disabled on bitcoin/bips - there's no Issues tab and /issues/new 404s -
 so I opened a PR with the fix instead, which should give you the same trackable
@@ -13,7 +13,7 @@ Ashwin
 
 ---
 
-## If he replies "no, I meant <some repo>"
+## If he replies naming a repo
 
 File it there using disclosure/bips-issue.md, which is already written as an
 issue body (it needs no changes beyond the venue).
