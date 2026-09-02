@@ -1,6 +1,8 @@
+diff --git a/bip-0360/ref-impl/python/p2mr.py b/bip-0360/ref-impl/python/p2mr.py
+index 7a2ac47..937dd8d 100644
 --- a/bip-0360/ref-impl/python/p2mr.py
 +++ b/bip-0360/ref-impl/python/p2mr.py
-@@ -23,6 +23,11 @@
+@@ -23,6 +23,11 @@ BECH32_CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
  BECH32M_CONST = 0x2BC830A3
  MAX_COMPACT_SIZE = 2**64 - 1
  
@@ -12,7 +14,7 @@
  # A script tree node is either a leaf (dict) or a branch (list of nodes)
  ScriptTree = Union[Dict[str, Any], List["ScriptTree"]]
  
-@@ -88,7 +93,7 @@
+@@ -88,7 +93,7 @@ def tapbranch_hash(left: bytes, right: bytes) -> bytes:
      return tagged_hash("TapBranch", b"".join(sorted((left, right))))
  
  
@@ -21,7 +23,7 @@
      """Recursively compute script tree merkle root"""
      if isinstance(tree, dict):  # Leaf
          version = tree["leafVersion"]
-@@ -99,8 +104,15 @@
+@@ -99,8 +104,15 @@ def compute_merkle_root(tree: ScriptTree) -> bytes:
          # Script trees are treated strictly as binary trees; each branch node should have
          # exactly 2 children. This isn't a general n-ary fold, and combining
          # more than 2 children sequentially would not produce a valid P2MR merkle root.
@@ -39,7 +41,7 @@
          return tapbranch_hash(left, right)
  
      else:  # badbadnotgood
-@@ -118,18 +130,26 @@
+@@ -118,18 +130,26 @@ def compute_control_block(path: int, tree: ScriptTree) -> bytes:
      """
      if isinstance(tree, dict):
          return bytes([tree["leafVersion"] | 1])
@@ -69,12 +71,12 @@
      return bytes([tree["leafVersion"] | 1]) + control_block
  
  
-@@ -412,6 +432,39 @@
+@@ -412,6 +432,39 @@ def run_single_test(v: Dict[str, Any], test_num: int) -> bool:
          return False
  
  
 +def negative_structure_tests() -> None:
-+    """Malformed trees must raise -- not silently mis-hash -- including under python -O."""
++    """Malformed trees must raise -- never silently return a wrong root -- including under python -O."""
 +    print("\nRunning negative structure tests...")
 +    leaf_a = {"leafVersion": 0xC0, "script": "51"}
 +    leaf_b = {"leafVersion": 0xC0, "script": "52"}
@@ -109,7 +111,7 @@
  def BIP360_tests() -> None:
      """Run all BIP-360 Test Vectors."""
      print("\nRunning BIP-0360 Pay-to-Merkle-Root (P2MR) Tests...")
-@@ -421,6 +474,7 @@
+@@ -421,6 +474,7 @@ def BIP360_tests() -> None:
  
      passed = sum(run_single_test(v, i + 1) for i, v in enumerate(test_vectors))
      print(f"\n{passed}/{len(test_vectors)} BIP-360 tests passed successfully.")

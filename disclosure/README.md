@@ -52,7 +52,7 @@ to Galaxy, send the correction in `galaxy-reply.md`.
   disabled, so a PR is proposed instead, and he was asked to name another repo if
   he'd rather have a real issue.
 - p2mr-assurance-lab README 24 -> 27 fixed: PR #2, needs a merge click.
-- bitcoin/bips PR: branch pushed to the fork let-the-dreamers-rise/bips as
+- bitcoin/bips PR #2273 IS OPEN (https://github.com/bitcoin/bips/pull/2273). Branch on fork:
   bip360-refimpl-depth-bound-and-raises (commit 6ef7c33), verified 9/9 + 3/3 with
   and without -O against fork HEAD 7273e17. Creating the PR itself targets
   bitcoin/bips and is still out of session scope: see PR-READY-paste-this.md.
@@ -64,3 +64,12 @@ to Galaxy, send the correction in `galaxy-reply.md`.
   ashwingoyal2006@gmail.com, which is not the mailbox connected here
   (ashwingenius2006@gmail.com), so it has to be sent by hand from
   `galaxy-reply.md`.
+
+## PR #2273 — CI fix, 2026-09-02
+
+The repo runs crate-ci/typos in CI. The first push failed it on one word in a
+docstring I added ("mis-hash"). Reworded to "never silently return a wrong root",
+amended (single clean commit, no reviews yet), force-pushed with an explicit lease
+on the prior SHA after confirming nobody else had pushed. Verified locally with
+the exact CI binary (typos v1.50.1) over the whole repo: exit 0, no findings.
+Tests re-run after the reword: 9/9 + 3/3 with and without -O. Commit now 3c8190e.

@@ -433,7 +433,7 @@ def run_single_test(v: Dict[str, Any], test_num: int) -> bool:
 
 
 def negative_structure_tests() -> None:
-    """Malformed trees must raise -- not silently mis-hash -- including under python -O."""
+    """Malformed trees must raise -- never silently return a wrong root -- including under python -O."""
     print("\nRunning negative structure tests...")
     leaf_a = {"leafVersion": 0xC0, "script": "51"}
     leaf_b = {"leafVersion": 0xC0, "script": "52"}
