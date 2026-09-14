@@ -47,3 +47,22 @@ Signal handle as verified.
 
 bitcoin/bips PR #2273 has had zero reviews, comments or labels since it opened
 on 2026-09-02.
+
+## Reply sent 2026-09-14
+
+Sent to hunter@surmount.systems only (not reply-all), threaded into the original
+conversation. Every factual claim was re-verified live immediately before sending:
+
+- "cryptoquick/bips still shows Issue creation is restricted" - checked, still true,
+  0 open issues.
+- "no review since it opened on the 2nd" - checked, PR #2273 open at 3c8190e with
+  no reviews, comments, labels, approvals or assignees.
+- "FINDINGS.md since the repo went up, and now in the PR" - true.
+- "your own site warns people about scammers" - true, cryptoquick.com carries
+  "I will never ask you for money... Do not fall for scammers!"
+- Apology for roughly a week's delay, reason given: laptop away for repair.
+
+The reply accepts Signal for genuinely sensitive future findings, keeps the two
+current (already public) findings in the open, and asks for a one-line comment on
+PR #2273 from his GitHub account as identity confirmation before moving security
+reports to a private channel.
